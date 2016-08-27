@@ -14,14 +14,6 @@
 		<style charset="utf-8" class="lazyload">
 			@import "twitbay_files/phoenix_more.bundle.css";
 		</style>
-		
-		<!-- TODO - make background image random -->
-		<!-- Available backgrounds:
-					background1.jpg
-					background2.jpg
-					background3.jpg
-					background4.jpg
-		-->
 
     <?php
         $bgroundRand = rand(1, 4);
@@ -32,8 +24,6 @@
 				background-image: url(twitbay_files/background<?php echo $bgroundRand ?>.jpg);
         }
 		</style>
-		
-		<!-- End of BG image -->
 		
 	</head>
 	<body class="logged-out  mozilla user-style-Hicksdesign">
@@ -56,17 +46,14 @@
                                 // Match found in db
                                 if (isset($_SESSION['loggedin']) == false) {
                             ?>
-        				    <!-- TODO - if not logged in, display login form -->
+        				    <!-- if not logged in, display login form -->
         						<form action='login.php' method='post'>
         							Username: <input type="text" name="username" /> 
         							Password: <input type="text" name="password" />
         							<input type="submit" value="Sign in" />
         						</form>
         					    <!-- end of login -->
-        				    <!-- TODO - when the form action is completed - your app should process -->
-        				    <!-- the login request, and if the credentials are good - store the login--> 
                             
-                            <!-- info in the session -->    							
         						<!-- If the user IS logged in then display a welcome message. -->
         					
                                 <?php
@@ -113,7 +100,10 @@
   						</div>
     					<ul class="stream-tabs">
                             <li class="stream-tab stream-tab-tweets active">
-        					   <a class="tab-text">Posts</a>
+        					   <a class="tab-text">All Posts</a>
+                            </li>
+                            <li class="stream-tab stream-tab-tweets active">
+        					   <a class="tab-text">My Posts</a>
                             </li>
 					   </ul>
                     </div>
@@ -124,8 +114,8 @@
   									<div id="stream-items-id" class="stream-items">
 
   									
-  										<!-- TODO 1. show all postings -->
   										<!-- TODO 2. show only those posts from user in URL -->
+                                        <!-- select posts.content, users.name, posts.date from posts inner join users on posts.user_id=users.id; -->
   										
   										<!-- TODO - start of a posting - note that all postings will need to be created from DB -->
 										<div media="true" class="js-stream-item stream-item">
@@ -134,7 +124,10 @@
 													<img src="twitbay_files/userPic.jpg" alt="Post pic" class="user-profile-link" height="48" width="48">
 												</div>
 												<div class="tweet-content">
-													<a class="tweet-screen-name user-profile-link">Tom Monson</a>
+                                                    <!-- TODO 1. show all postings -->
+                                                    <?php
+                                                    ?>
+                                                    <a class="tweet-screen-name user-profile-link">Name goes here</a>
 													<p class="tweet-text js-tweet-text">I have the latest Lady-Gaga album 
 													for sale - hurry now now nownow now, you must buy it no-ow!</p>
 													<p class="tweet-timestamp">24 minutes ago</p>
