@@ -4,7 +4,6 @@ require_once('database.php');
 require_once('User.php');
 require_once('Post.php');
 require_once('UserStat.php');
-require_once('Image.php');
 ?>
 <!DOCTYPE HTML>
 <html class=" js">
