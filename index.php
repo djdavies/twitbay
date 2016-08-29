@@ -47,31 +47,32 @@ require_once('UserStat.php');
               <div class="active-links">
                 <div id="session">
                     <?php 
-                                // Match found in db
-                    if (isset($_SESSION['loggedin']) == false) {
-                        ?>
-                        <!-- if not logged in, display login form -->
-                        <form action='login.php' method='post'>
-                         Username: <input type="text" name="username" /> 
-                         Password: <input type="text" name="password" />
-                         <input type="submit" value="Sign in" />
-                     </form>
+                      // Match found in db
+                        if (isset($_SESSION['loggedin']) == false) {
+                    ?>
+                    <!-- if not logged in, display login form -->
+                    <form action='login.php' method='post'>
+                        Username: <input type="text" name="username" /> 
+                        Password: <input type="text" name="password" />
+                        <input type="submit" value="Sign in" />
+                    </form>
                      <!-- end of login -->
 
 
-                     <?php
-        						// If the user IS logged in then display a welcome message.
-                 } else {
+                    <?php
+        			    // If the user IS logged in then display a welcome message.
+                        } else {
                     ?> 
+                    
                     <p>Welcome to Twitbay, <?php echo $_SESSION['username']; ?></p>
                     <form action='logout.php' method='post'>
                         <input type="submit" value="Log out" />
                     </form>
 
                     <?php 
-                }; 
-                ?>
-            </div>
+                        }; 
+                    ?>
+            </div> <!-- /session -->
         </div> <!-- /active-links -->
     </div> <!-- top-bar-inside -->
 </div> <!-- top-bar -->
@@ -146,22 +147,33 @@ require_once('UserStat.php');
             $userNames->getUserNames();
         ?>
 
-        <!-- End of user list                    -->
+        <!-- End of user list -->
 
 
         <hr />
 
         <div class="profile-subpage-call-out">
 
-             <!-- TODO - If logged in, display text box where user can post -->
-             <?php if (isset($_SESSION['loggedin'])) {
-                echo "What're ya sellin'?";
-            } else {
-                echo "Yo, you're not logged in.";
-            }
+            <!-- TODO - If logged in, display text box where user can post -->
+            <?php 
+                if (isset($_SESSION['loggedin'])) {
+                    $sellingUsername = $_SESSION['username'];
+            ?> 
+                    <form action="selling.php" name="sellingForm" method="post">
+                        What're ya sellin'?:<br>
+                        <textarea name="content" cols="40" rows="4"></textarea><br>
+                        What're ya askin' for?:<br>
+                        <input type="number" step="0.01" name="price"><br> 
+                        <input type="hidden" name="username" value="<?php echo $sellingUsername; ?>">
+                        <input type="submit" value="Submit">
+                    </form>    
+                    <!-- End of posting form -->
+
+            <?php
+                } else {
+                    echo "Yo, you're not logged in.";
+                }
             ?>  
-            <!-- ??? -->
-            <!-- End of posting form -->
 
 
             <!-- TODO - If not logged in, display a sign up form -->
