@@ -34,4 +34,24 @@ class Post {
             }
         }
     }
-}
+
+    public function setPost($content, $price, $username) {
+        require('database.php');
+        // These could probably be combined into a subquery?
+        if ($result = $mysqli->query("SELECT id as sale_id FROM users WHERE email = 'batman@gotham.com'")) {
+            while ($row = $result->fetch_assoc()) {
+                $sale_id = $row['sale_id'];
+            }
+        }
+
+        $sale = $mysqli->query("INSERT INTO posts (content, price, user_id) VALUES ('$content', $price, $sale_id)");
+
+        if ($sale === TRUE) {
+            echo 'Record created successfully';
+        } else {
+                echo 'Record nope..';
+        }
+
+        echo $content . $price . $sale_id;
+    }
+}       
