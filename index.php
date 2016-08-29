@@ -1,6 +1,10 @@
 <?php
     session_start();
-   require_once('database.php');
+    require_once('database.php');
+    require_once('User.php');
+    require_once('Post.php');
+    require_once('UserStat.php');
+    require_once('Image.php');
 ?>
 <!DOCTYPE HTML>
 <html class=" js">
@@ -13,20 +17,21 @@
 		<link rel="stylesheet" href="twitbay_files/phoenix_core_logged_out.css" type="text/css" media="screen">
 		<style charset="utf-8" class="lazyload">
 			@import "twitbay_files/phoenix_more.bundle.css";
+            @import "twitbay_files/styles.css"
 		</style>
 
     <?php
         $bgroundRand = rand(1, 4);
     ?>
 		
-		<style id="user-style-Hicksdesign-bg-img">
+        <style class="user-style-Hicksdesign-bg-img">
   		body.user-style-Hicksdesign {
 				background-image: url(twitbay_files/background<?php echo $bgroundRand ?>.jpg);
         }
-		</style>
+        </style>
 		
 	</head>
-	<body class="logged-out  mozilla user-style-Hicksdesign">
+	<body class="logged-out  mozilla user-style-Hicksdesign" id="bg-size">
 		<div class="route-profile" id="doc">
         	<div id="top-stuff">
           	<div id="top-bar-outer">
@@ -54,12 +59,12 @@
         						</form>
         					    <!-- end of login -->
                             
-        						<!-- If the user IS logged in then display a welcome message. -->
         					
                                 <?php
+        						// If the user IS logged in then display a welcome message.
                                     } else {
                                 ?> 
-                                    <p>Welcome to Twitbay</p>
+                                    <p>Welcome to Twitbay, <?php echo $_SESSION['username']; ?></p>
                                     <form action='logout.php' method='post'>
                                         <input type="submit" value="Log out" />
                                     
@@ -112,26 +117,21 @@
   							<div class="stream-container">
   								<div class="stream stream-user">
   									<div id="stream-items-id" class="stream-items">
-
-  									
-  										<!-- TODO 2. show only those posts from user in URL -->
-                                        <!-- select posts.content, users.name, posts.date from posts inner join users on posts.user_id=users.id; -->
-  										
   										<!-- TODO - start of a posting - note that all postings will need to be created from DB -->
 										<div media="true" class="js-stream-item stream-item">
-											<div class="stream-item-content tweet js-actionable-tweet stream-tweet">
-												<div class="tweet-image">
-													<img src="twitbay_files/userPic.jpg" alt="Post pic" class="user-profile-link" height="48" width="48">
-												</div>
-												<div class="tweet-content">
-                                                    <!-- TODO 1. show all postings -->
-                                                    <?php
-                                                    ?>
-                                                    <a class="tweet-screen-name user-profile-link">Name goes here</a>
-													<p class="tweet-text js-tweet-text">I have the latest Lady-Gaga album 
-													for sale - hurry now now nownow now, you must buy it no-ow!</p>
-													<p class="tweet-timestamp">24 minutes ago</p>
-												</div>
+											<div class="stream-item-content tweet js-actionable-tweet stream-tweet" id="font-size">
+                                                <div class="tweet-image" id="visible-overflow">
+                                                 <?php
+                                                    $image = new Image;
+                                                    $image->getUserImage();
+                                                ?>
+                                                </div>
+                                                    <div class="tweet-content">
+                                                        <?php
+                                                            $posts = new Post;     
+                                                            $posts->getAllPosts();
+                                                      ?>
+												    </div>
 											</div>
 										</div>
 
@@ -151,14 +151,10 @@
           					</h1>
         						<h2>Don't miss products from your favourite users!</h2>
         						
-        						<!-- TODO - List all Twitbay users in DB -->
+                                <!-- All users in DB -->
                                 <?php
-                                    if ($result = $mysqli->query('SELECT name FROM users')) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo $row['name'] . '<br>';
-                                        }
-                                    }
-
+                                      $userNames = new User;
+                                      $userNames->getUserNames();
                                 ?>
 
         						<!-- End of user list                    -->
@@ -169,6 +165,10 @@
         						<div class="profile-subpage-call-out">
         							
         							<!-- TODO - If logged in, display text box where user can post -->
+                                    <?php if (isset($_SESSION['loggedin'])) {
+                                        echo "You're logged in, yo";
+                                    }
+                                    ?>  
         							<!-- ??? -->
         							<!-- End of posting form -->
         							
@@ -198,10 +198,17 @@
                                 <!-- TODO - display site stats pulled from database -->
     							<ul class="user-stats clearfix">
             						<li>
-            							<a class="user-stats-count">99<span class="user-stats-stat">Users</span></a>
+                                        <?php 
+                                            $user = new UserStat;
+                                        ?>
+                                        <a class="user-stats-count">
+                                            <?php $user->countUsers(); ?>
+                                        <span class="user-stats-stat">Users</span></a>
             						</li>
             						<li>
-            							<a class="user-stats-count">9,000<span class="user-stats-stat">Posts</span></a>
+                                        <a class="user-stats-count">
+                                            <?php $user->countPosts(); ?>
+                                        <span class="user-stats-stat">Posts</span></a>
             						</li>
     								<li>
     									<a class="user-stats-count">£100,000<span class="user-stats-stat">Sales</span></a>

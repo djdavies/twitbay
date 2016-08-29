@@ -1,0 +1,12 @@
+/*Make the user posts image visible*/
+#visible-overflow {
+  overflow: visible;
+}
+
+#font-size {
+	font-size: 12px;
+}
+
+#bg-size {
+	background-size: cover;
+}
