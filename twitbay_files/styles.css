@@ -10,3 +10,11 @@
 #bg-size {
 	background-size: cover;
 }
+
+#gotham-logo {
+	display: inline !important;
+}
+
+#top-bar-gotham {
+	height: 175%;
+}

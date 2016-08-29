@@ -38,10 +38,10 @@ require_once('UserStat.php');
         <div id="top-bar">
             <div style="left: 0px;" class="top-bar-inside">
                <div class="static-links">
-                   <div id="logo">
-                       <a href="http://localhost/">
-                          <img src="twitbay_files/logo.png" alt="nope"/>
-                      </a>
+                    <div id="logo">
+                           <a id="gotham-logo" href="http://localhost/">
+                              <img src="twitbay_files/logo.png" alt="nope"/>
+                          </a>
                   </div>			
               </div> 
               <div class="active-links">
@@ -103,7 +103,7 @@ require_once('UserStat.php');
                         </div>
 
                         <div class="url">
-                            <a target="_blank" rel="me nofollow" href="http://www.spiderstudios.co.uk/">http://www.spiderstudios.co.uk/</a>
+                            <a target="_blank" rel="me nofollow" href="http://www.spiderstudios.co.uk/">http://www.gotham.com/</a>
                         </div>
                     </div>
                 </div>
@@ -122,8 +122,8 @@ require_once('UserStat.php');
                 <div class="stream stream-user">
 
                     <?php
-                    $posts = new Post;     
-                    $posts->getAllPosts();
+                        $posts = new Post;     
+                        $posts->getAllPosts();
                     ?>
 
                 </div> <!-- stream-user -->  
@@ -142,8 +142,8 @@ require_once('UserStat.php');
 
         <!-- All users in DB -->
         <?php
-        $userNames = new User;
-        $userNames->getUserNames();
+            $userNames = new User;
+            $userNames->getUserNames();
         ?>
 
         <!-- End of user list                    -->
@@ -153,27 +153,29 @@ require_once('UserStat.php');
 
         <div class="profile-subpage-call-out">
 
-         <!-- TODO - If logged in, display text box where user can post -->
-         <?php if (isset($_SESSION['loggedin'])) {
-            echo "You're logged in, yo";
-        }
-        ?>  
-        <!-- ??? -->
-        <!-- End of posting form -->
+             <!-- TODO - If logged in, display text box where user can post -->
+             <?php if (isset($_SESSION['loggedin'])) {
+                echo "What're ya sellin'?";
+            } else {
+                echo "Yo, you're not logged in.";
+            }
+            ?>  
+            <!-- ??? -->
+            <!-- End of posting form -->
 
 
-        <!-- TODO - If not logged in, display a sign up form -->
-        <!-- ??? -->
-        <!-- End of signup form -->
+            <!-- TODO - If not logged in, display a sign up form -->
+            <!-- ??? -->
+            <!-- End of signup form -->
 
         <hr />
 
-        							<!-- TODO - If logged in, display a summary of cart stats, together with
-                                  a link to enable folks to checkout -->
-                                  <!-- ??? -->
-                                  <!-- End of cart details -->
+	       <!-- TODO - If logged in, display a summary of cart stats, together with
+                a link to enable folks to checkout -->
+            <!-- ??? -->
+            <!-- end of cart details -->
 
-                              </div>
+        </div>
                           </div>
                           <hr class="component-spacer">
                       </div> <!-- /component -->
