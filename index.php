@@ -4,6 +4,7 @@ require_once('database.php');
 require_once('User.php');
 require_once('Post.php');
 require_once('UserStat.php');
+require_once('Purchase.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -55,7 +56,7 @@ require_once('UserStat.php');
                                     ?>
                                             <!-- if not logged in, display login form -->
                                             <form action='login.php' method='post'>
-                                                Username: <input type="text" name="username" /> 
+                                                Email: <input type="text" name="username" /> 
                                                 Password: <input type="text" name="password" />
                                                 <input type="submit" value="Sign in" />
                                             </form>
@@ -88,11 +89,11 @@ require_once('UserStat.php');
                             </div>
                             <div class="profile-details">
                                 <div class="full-name">
-                                    <h2>Twitbay Listings</h2>
+                                    <h2>Gothambay Listings</h2>
                                 </div>
                                 <div class="screen-name-and-location">
-                                    <span class="screen-name screen-name-Hicksdesign pill">@Twitbay</span>
-                                        Cardiff, Wales, UK
+                                    <span class="screen-name screen-name-Hicksdesign pill">@Gothambay</span>
+                                        Gotham, DC Universe
                                 </div>
                                 <div class="bio">
                                     Gotham City or Gotham is a fictional city appearing in American comic books published by DC Comics, best known as the home of Batman. Batman's place of residence was first identified as Gotham City in Batman #4.
@@ -116,10 +117,12 @@ require_once('UserStat.php');
                             <div class="stream-container">
                                 
                                 <div class="stream stream-user">
-                                    <?php
-                                        $posts = new Post;     
-                                        $posts->getAllPosts();
-                                    ?>
+                                    <div id="stream-items-id" class="stream-items">
+                                        <?php
+                                            $posts = new Post;     
+                                            $posts->getAllPosts();
+                                        ?>
+                                    </div> <!-- /stream-item -->
                                 </div> <!-- stream-user -->
                             </div> <!-- /stream-container -->
                         </div> <!-- /profile-stream-manager -->
@@ -141,7 +144,7 @@ require_once('UserStat.php');
                             <!-- End of user list -->
                             <hr />
                             <div class="profile-subpage-call-out">
-                                <!-- TODO - If logged in, display text box where user can post -->
+                                <!-- If logged in, display text box where user can post -->
                                 <?php 
                                     if (isset($_SESSION['loggedin'])) {
                                         $sellingUsername = $_SESSION['username'];
@@ -149,29 +152,48 @@ require_once('UserStat.php');
                                         <form action="selling.php" name="sellingForm" method="post">
                                             What're ya sellin'?:<br>
                                             <textarea name="content" cols="40" rows="4"></textarea><br>
-                                            What're ya askin' for?:<br>
+                                            What're ya askin' for it?:<br>
                                             <input type="number" step="0.01" name="price"><br> 
                                             <input type="hidden" name="username" value="<?php echo $sellingUsername; ?>">
                                             <input type="submit" value="Submit">
                                         </form>    
                                         <!-- End of posting form -->
-                                    <!-- TODO - If not logged in, display a sign up form -->
-                                    <!-- ??? -->
-                                    <!-- End of signup form -->
+
+                                    <!-- If not logged in, display a sign up form -->
                                     <?php
                                         } else {
-                                            echo "Yo, you're not logged in.";
+                                    ?>  
+                                            You aren't logged in. Sign up?
+                                            <form action="register.php" name="register" method="post">    
+                                                Username: <input type="text" name="username" /> <br>
+                                                Email: <input type="text" name="email" /> <br>
+                                                Password: <input type="text" name="password" /> <br>
+                                                <input type="submit" value="Submit">
+                                            </form>
+                                        <?php
                                         }
                                     ?>  
+                                    <!-- End of signup form -->
                                     <hr />
-                    	           <!-- TODO - If logged in, display a summary of cart stats, together with
-                                    a link to enable folks to checkout -->
-                                    <!-- ??? -->
-                                    <!-- end of cart details -->
                             </div> <!-- /profile-subpage-call-out -->
                         </div> <!-- /signup-callout -->
                         <hr class="component-spacer">
                     </div> <!-- /component -->
+                    
+                   <!-- TODO - If logged in, display a summary of cart stats, together with a link to enable folks to checkout -->
+                    <div class="component">
+                        <div class="signup-call-out">
+                            <h1>Cart Items</h1>
+                            <p>
+                                <?php 
+                                    $inCart = new Purchase;
+                                    $inCart->getPurchase($sellingUsername);    
+                                ?>
+                            </p>
+                        </div> <!-- /signup-call-out -->
+                    </div> <!-- /component -->
+                    <!-- end of cart details -->
+
                     <div class="component">
                         <div class="dashboard-profile-annotations clearfix">
                             <h2 class="dashboard-profile-title">

@@ -13,6 +13,8 @@ $result = $mysqli->query("
 
 // If match found in database
 if ($result) {
+	session_destroy();
+	session_start();
     $_SESSION['loggedin'] = true;
     $_SESSION['username'] = $username;
     header('Location: index.php');

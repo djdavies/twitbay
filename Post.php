@@ -4,12 +4,12 @@ class Post {
     public function getAllPosts() {
         require('database.php');
         //TODO: add user images.
-        if ($result = $mysqli->query('SELECT posts.content, users.name, users.image, posts.date FROM posts INNER JOIN users ON posts.user_id=users.id;')) {
+        if ($result = $mysqli->query('SELECT posts.id, posts.content, users.name, users.image, posts.date, posts.price FROM posts INNER JOIN users ON posts.user_id=users.id;')) {
             while ($rows = $result->fetch_assoc()) {
 ?>  
-                <div id="stream-items-id" class="stream-items">
+                
                 <!-- TODO - start of a posting - note that all postings will need to be created from DB -->
-                    <div media="true" class="js-stream-item stream-item">
+                    <div media="true" class="js-stream-item stream-item" name="<?php echo $rows['id'];?>">
                         <div class="stream-item-content tweet js-actionable-tweet stream-tweet" id="font-size">
                             
                             <div class="tweet-image" id="visible-overflow">
@@ -23,13 +23,27 @@ class Post {
                                 <p class="tweet-text js-tweet-text">
                                     <?php echo $rows['content']; ?>
                                 </p>
+                                <p class="tweet-price js-tweet-text">
+                                    <em>Price: 
+                                    <?php 
+                                    if ($rows['price']) {
+                                        echo '$' .$rows['price'];    
+                                    } else {
+                                        echo 'Priceless.';
+                                    }
+                                    ?></em>
+                                </p>
                                 <p class="tweet-timestamp">
                                     <?php echo $rows['date']; ?>
                                 </p>
+
+                                <form action="buying.php" name="buying" method="post">
+                                    <input type='hidden' name="buyingId" value="<?php echo $rows['id'];?>">     
+                                    <input type="submit" name="buying" value="Aaaah, I'll buy it at a high price!">
+                                </form>
                             </div> <!-- tweet-content -->
                         </div> <!-- /stream-item-content -->
                     </div> <!-- stream-item -->
-                </div>
 <?php   
             }
         }
@@ -38,20 +52,14 @@ class Post {
     public function setPost($content, $price, $username) {
         require('database.php');
         // These could probably be combined into a subquery?
-        if ($result = $mysqli->query("SELECT id as sale_id FROM users WHERE email = 'batman@gotham.com'")) {
+        if ($result = $mysqli->query("SELECT id FROM users WHERE email = '$username'")) {
             while ($row = $result->fetch_assoc()) {
-                $sale_id = $row['sale_id'];
+                $sale_id = $row['id'];
             }
+
+            $mysqli->query("INSERT INTO posts (content, price, user_id) VALUES ('$content', $price, '$sale_id')");
         }
-
-        $sale = $mysqli->query("INSERT INTO posts (content, price, user_id) VALUES ('$content', $price, $sale_id)");
-
-        if ($sale === TRUE) {
-            echo 'Record created successfully';
-        } else {
-                echo 'Record nope..';
-        }
-
-        echo $content . $price . $sale_id;
+        
+        header('Location: index.php');
     }
 }       
