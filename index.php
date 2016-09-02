@@ -57,7 +57,7 @@ require_once('Purchase.php');
                                             <!-- if not logged in, display login form -->
                                             <form action='login.php' method='post'>
                                                 Email: <input type="text" name="username" /> 
-                                                Password: <input type="text" name="password" />
+                                                Password: <input type="password" name="password" />
                                                 <input type="submit" value="Sign in" />
                                             </form>
                                              <!-- end of login -->
@@ -105,10 +105,10 @@ require_once('Purchase.php');
                         </div> <!-- profile-info clearfix -->
                         <ul class="stream-tabs">
                             <li class="stream-tab stream-tab-tweets active">
-                                <a class="tab-text">All Posts</a>
+                                <a class="tab-text" id="allPosts">All Posts</a>
                             </li>
                             <li class="stream-tab stream-tab-tweets active">
-                                <a class="tab-text">My Posts</a>
+                                <a class="tab-text" id="myPosts">My Posts</a>
                             </li>
                         </ul>
                     </div> <!-- /profile-header -->
@@ -119,8 +119,8 @@ require_once('Purchase.php');
                                 <div class="stream stream-user">
                                     <div id="stream-items-id" class="stream-items">
                                         <?php
-                                            $posts = new Post;     
-                                            $posts->getAllPosts();
+                                            $posts = new Post;
+                                            $posts->getAllPosts();  
                                         ?>
                                     </div> <!-- /stream-item -->
                                 </div> <!-- stream-user -->
@@ -167,7 +167,7 @@ require_once('Purchase.php');
                                             <form action="register.php" name="register" method="post">    
                                                 Username: <input type="text" name="username" /> <br>
                                                 Email: <input type="text" name="email" /> <br>
-                                                Password: <input type="text" name="password" /> <br>
+                                                Password: <input type="password" name="password" /> <br>
                                                 <input type="submit" value="Submit">
                                             </form>
                                         <?php
@@ -187,7 +187,11 @@ require_once('Purchase.php');
                             <p>
                                 <?php 
                                     $inCart = new Purchase;
-                                    $inCart->getPurchase($sellingUsername);    
+                                    if (isset($sellingUsername)) {
+                                        $inCart->getPurchase($sellingUsername);    
+                                    } else {
+                                        echo 'No items in cart.';
+                                    }
                                 ?>
                             </p>
                         </div> <!-- /signup-call-out -->
@@ -219,7 +223,12 @@ require_once('Purchase.php');
                                 </a>
                             </li>
                             <li>
-                                <a class="user-stats-count">£100,000<span class="user-stats-stat">Sales</span></a>
+                                <a class="user-stats-count">
+                                <?php
+                                    $sales = new Purchase;
+                                    $sales->getSalesCost();
+                                ?>
+                                <span class="user-stats-stat">Sales</span></a>
                             </li>
                         </ul>
                         <!-- end of stats -->

@@ -1,13 +1,15 @@
 <?php
 class Post {
 
+    // Get all posts, or just posts belonging to currently logged in user.
     public function getAllPosts() {
         require('database.php');
         //TODO: add user images.
-        if ($result = $mysqli->query('SELECT posts.id, posts.content, users.name, users.image, posts.date, posts.price FROM posts INNER JOIN users ON posts.user_id=users.id;')) {
+
+        if ($result = $mysqli->query("SELECT posts.id, posts.content, users.name, users.image, posts.date, posts.price FROM posts INNER JOIN users ON posts.user_id=users.id")) {
+
             while ($rows = $result->fetch_assoc()) {
 ?>  
-                
                 <!-- TODO - start of a posting - note that all postings will need to be created from DB -->
                     <div media="true" class="js-stream-item stream-item" name="<?php echo $rows['id'];?>">
                         <div class="stream-item-content tweet js-actionable-tweet stream-tweet" id="font-size">
@@ -45,9 +47,19 @@ class Post {
                         </div> <!-- /stream-item-content -->
                     </div> <!-- stream-item -->
 <?php   
+            } // end while
+        } // end if
+    } // end func
+
+    public function getPost($username) {
+        require('database.php');
+        if ($result = $mysqli->query("SELECT * FROM posts where email = '$username'")) {
+            while ($row = $result->fetch_assoc()) {
+                var_dump($row);
             }
         }
     }
+
 
     public function setPost($content, $price, $username) {
         require('database.php');
@@ -62,4 +74,4 @@ class Post {
         
         header('Location: index.php');
     }
-}       
+} // end class       
